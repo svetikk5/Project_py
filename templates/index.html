@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Объявления</h1>
+{% for item in news%}
+<div class="col-md6 border rounded">
+    <h2>{{item.title}}</h2>
+    <div>
+
+        <img height="450px" width="600px" src="{{url_for('static_point', filename=item.foto)}}"
+            alt="здесь должна была быть картинка, но не нашлась">
+    </div>
+    <div>
+        {{item.content}}
+    </div>
+    <br />
+    <div>
+        Автор - {{item.user.name}}, Дата объявления - {{item.created_date}}
+    </div>
+    {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/news/{{ item.id }}" class="btn btn-outline-warning">
+            Изменить объявление
+        </a>
+        <a href="/news_delete/{{ item.id }}" class="btn btn-outline-danger">
+            Удалить объявление
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% if current_user.is_authenticated %}
+<br />
+<a href="news" class="btn btn-outline-secondary">Добавить объявление</a>
+{% endif %}
+{% endblock %}
